@@ -13,7 +13,7 @@ In a (tmux) terminal:
 **Prepare j2objc-gradle**
 
 1. First, downgrade your java 1.7: `cd j2objc-gradle ; ./install-osx-jdk7.sh`, otherwise you will get a _café babe_.
-2. Build the project: `JAVA_HOME=$(/usr/libexec/java_home --failfast --version 1.7) ./gradlew clean build./gradlew clean build`
+2. Build the project: `JAVA_HOME=$(/usr/libexec/java_home --failfast --version 1.7) ./gradlew clean build`
 3. run `./systemTests/install.sh && ./systemTests/run-all.sh` to verify you have a working system
 
 **Prepare Xtendroid**
