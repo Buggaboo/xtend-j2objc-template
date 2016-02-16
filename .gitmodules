@@ -2,3 +2,7 @@
 	path = j2objc-gradle
 	url = git@github.com:j2objc-contrib/j2objc-gradle.git
 	ignore = dirty
+[submodule "Xtendroid"]
+	path = Xtendroid
+	url = git@github.com:tobykurien/Xtendroid.git
+	ignore = dirty
