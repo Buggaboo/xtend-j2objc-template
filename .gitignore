@@ -30,3 +30,4 @@ gradle.properties
 
 # Pod
 Pods/
+Podfile.lock
