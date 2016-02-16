@@ -1,0 +1,4 @@
+[submodule "j2objc-gradle"]
+	path = j2objc-gradle
+	url = git@github.com:j2objc-contrib/j2objc-gradle.git
+	ignore = dirty
