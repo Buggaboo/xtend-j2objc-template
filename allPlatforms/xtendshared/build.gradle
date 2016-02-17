@@ -1,0 +1,87 @@
+// Xtend to Java step
+
+buildscript {scriptHandler->
+    apply from: '../../Xtendroid/repositories.gradle', to: scriptHandler
+    apply from: '../../Xtendroid/dependencies.gradle'
+    dependencies {
+        classpath(project.ext.build.xtend_android_gradle)
+        classpath(project.ext.build.xtext_gradle)
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'org.xtext.android.xtend'
+apply from: '../../Xtendroid/dependencies.gradle'
+
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile(project.ext.lib.xtend)
+  compile(project.ext.lib.android.support_v4)
+  compile(project.ext.lib.android.appcompat_v7)
+  compile project(':Xtendroid') // for @AndroidJsonized
+
+  // testing
+  androidTestCompile 'com.android.support:support-annotations:23.1.1'
+  androidTestCompile 'com.android.support.test:runner:0.4.1'
+  androidTestCompile 'com.android.support.test:rules:0.4.1'
+  androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+
+  testCompile 'junit:junit:4.12'
+}
+
+android {
+  compileSdkVersion(project.ext.compileSdkVersion)
+  buildToolsVersion(project.ext.buildToolsVersion)
+
+  sourceSets {
+    main {
+      manifest { srcFile 'AndroidManifest.xml' }
+      java.srcDirs = ['src/main/java']
+      res.srcDirs = ['res']
+      assets.srcDirs = ['assets']
+/*
+      // necessary?
+      resources.srcDirs += ['src']
+      aidl.srcDirs = ['src']
+*/
+    }
+
+    String sharedTestDir = 'src/test/java'
+    test {
+      java.srcDirs = [ sharedTestDir ]
+    }
+    androidTest {
+      java.srcDirs = [ sharedTestDir ]
+    }
+
+    compileOptions {
+      sourceCompatibility JavaVersion.VERSION_1_7
+      targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+      release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      }
+    }
+
+    lintOptions {
+      abortOnError false
+    }
+  }
+}
+
+/*
+TODO
+Add copy task to the mix (add the copy task after the build task)
+make the :app:build rely on a completed build by :xtendshared...
+but they can't share the same gradle ... since j2objc supports gradle-2.3,
+and xtend-android supports gradle-2.10... hmmmm.
+*/
