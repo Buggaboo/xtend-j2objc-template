@@ -12,8 +12,9 @@ In a (tmux) terminal:
 
 **Prepare j2objc-gradle**
 
-1. First, downgrade your java 1.7: `cd j2objc-gradle ; ./install-osx-jdk7.sh`, otherwise you will get a _café babe_.
-2. Build the project: `JAVA_HOME=$(/usr/libexec/java_home --failfast --version 1.7) ./gradlew clean build`
+0. Install [brew](http://brew.sh/)
+1. First, install java jdk 1.7: `brew tap caskroom/versions ; brew cask install caskroom/versions/java7`, otherwise you will get a _café babe_. Caveat: **Do not run the install-osxjdk7.sh** script unless you want to lose all your JDKs.
+2. Build the `cd j2objc-gradle ; JAVA_HOME=$(/usr/libexec/java_home --failfast --version 1.7) ./gradlew clean build`
 3. run `./systemTests/install.sh && ./systemTests/run-all.sh` to verify you have a working system
 
 **Prepare Xtendroid**
