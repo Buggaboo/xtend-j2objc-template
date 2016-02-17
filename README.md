@@ -1,5 +1,5 @@
-Xtext 2 Java 2 Objc
-===================
+Xtext 2 Java 2 Objective C
+==========================
 
 This project is a demo on how to transpile to Obj C from Xtend.
 
@@ -14,11 +14,13 @@ In a (tmux) terminal:
 
 0. Install [brew](http://brew.sh/)
 1. First, install java jdk 1.7: `brew tap caskroom/versions ; brew cask install caskroom/versions/java7`, otherwise you will get a _café babe_. Caveat: **Do not run the install-osx-jdk7.sh** script unless you want to lose all your JDKs.
-2. Build the `cd j2objc-gradle ; JAVA_HOME=$(/usr/libexec/java_home --failfast --version 1.7) ./gradlew clean build`
-3. run `./systemTests/install.sh && ./systemTests/run-all.sh` to verify you have a working system
+2. Install [jenv](http://www.jenv.be/) and add your jdk environments to jenv: `brew install jenv ; find /Library/Java/JavirtualMachines -name 'Home' -exec jenv add {} \;`
+3. Build the `jenv shell 1.7 ; cd j2objc-gradle ; ./gradlew clean build`
+4. run `./systemTests/install.sh && ./systemTests/run-all.sh` to verify you have a working system
 
 **Prepare Xtendroid**
 
+0. Be consistent and build with jdk 1.7: `jenv shell 1.7`
 1. Determine the development branch on Xtendroid: `cd Xtendroid ; git branch --all`
 2. Change to the development branch:
     `git checkout $(git branch --all | egrep -o "v[0-9]+\.[0-9]+_development") ; ./gradlew :Xtendroid:clean :Xtendroid:build`
