@@ -6,7 +6,12 @@ buildscript {scriptHandler->
     dependencies {
         classpath(project.ext.build.xtend_android_gradle)
         classpath(project.ext.build.xtext_gradle)
+	classpath(project.ext.build.android_gradle)
     }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.10'
 }
 
 repositories {
@@ -45,11 +50,6 @@ android {
       java.srcDirs = ['src/main/java']
       res.srcDirs = ['res']
       assets.srcDirs = ['assets']
-/*
-      // necessary?
-      resources.srcDirs += ['src']
-      aidl.srcDirs = ['src']
-*/
     }
 
     String sharedTestDir = 'src/test/java'
@@ -79,9 +79,15 @@ android {
 }
 
 /*
-TODO
-Add copy task to the mix (add the copy task after the build task)
+Add copy task to the mix (add the copy task after executing the build task)
 make the :app:build rely on a completed build by :xtendshared...
 but they can't share the same gradle ... since j2objc supports gradle-2.3,
-and xtend-android supports gradle-2.10... hmmmm.
+and xtend-android supports gradle-2.10
 */
+project.afterEvaluate {
+  project.tasks.create(name: 'copy2shared', type: Copy, dependsOn: 'build') {
+    from './build/generated/source/xtend/release'
+    into '../shared/src/main/java'
+    include '**/*.java'
+  }
+}

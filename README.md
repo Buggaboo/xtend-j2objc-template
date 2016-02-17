@@ -1,4 +1,4 @@
-Xtext 2 Java 2 Objective C
+Xtend 2 Java 2 Objective C
 ==========================
 
 This project is a demo on how to transpile to Obj C from Xtend.
@@ -24,5 +24,11 @@ In a (tmux) terminal:
 1. Determine the development branch on Xtendroid: `cd Xtendroid ; git branch --all`
 2. Change to the development branch:
     `git checkout $(git branch --all | egrep -o "v[0-9]+\.[0-9]+_development") ; ./gradlew :Xtendroid:clean :Xtendroid:build`
+    
+Workflow
+--------
+
+1. Import ':xtendshared' into your IDE (intellij / Android Studio), work from there as usual; ':xtendshared' is its own gradle rootProject, because ':xtendshared' requires gradle-2.10, and j2objc-gradle requires gradle-2.3.
+2. Everytime ':xtendshared' is built, the java files will be copied to the ':shared' project.
 
 
