@@ -29,6 +29,7 @@ Workflow
 --------
 
 1. Import ':xtendshared' into your IDE (intellij / Android Studio), work from there as usual; ':xtendshared' is its own gradle rootProject, because ':xtendshared' requires gradle-2.10, and j2objc-gradle requires gradle-2.3.
-2. Everytime ':xtendshared' is built, the java files will be copied to the ':shared' project.
+2. Everytime ':xtendshared' is built (`./gradlew build`), the java files will be copied to the ':shared' project.
+3. Transpiling to j2objc, requires you run (`./gradlew build`) in the directory _allPlatforms_.
 
 
