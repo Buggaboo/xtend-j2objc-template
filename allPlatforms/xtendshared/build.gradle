@@ -85,9 +85,11 @@ but they can't share the same gradle ... since j2objc supports gradle-2.3,
 and xtend-android supports gradle-2.10
 */
 project.afterEvaluate {
-  project.tasks.create(name: 'copy2shared', type: Copy, dependsOn: 'build') {
+  project.tasks.create(name: 'copy2shared', type: Copy, dependsOn: 'generateReleaseXtext') {
     from './build/generated/source/xtend/release'
     into '../shared/src/main/java'
     include '**/*.java'
   }
+
+  project.tasks['assemble'].dependsOn += ['copy2shared']
 }
