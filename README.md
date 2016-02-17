@@ -33,3 +33,10 @@ Workflow
 3. Transpiling to j2objc, requires you run (`./gradlew build`) in the directory _allPlatforms_.
 
 
+Roadmap
+-------
+
+* Autocopy unit tests (just like the java code), triggered by `:xtendshared:cAT`?.
+* Write a quotation apps in XCode (swift) and Android Studio (>2.0.0 alpha) that uses the :shared project.
+* Run unit tests in XCode (?)
+* Run java unit tests with `./gradlew :shared:test` from _allPlatforms_.
