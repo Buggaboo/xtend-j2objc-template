@@ -18,8 +18,8 @@ apply plugin: 'com.github.j2objccontrib.j2objcgradle'
 apply plugin: 'java'
 
 dependencies {
-    compile     'org.json:json:20090211' // TODO determine how does j2objc transpile this
-    testCompile 'junit:junit:4.10'
+    compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
+    testCompile 'junit:junit:4.12'
 }
 
 j2objcConfig {
