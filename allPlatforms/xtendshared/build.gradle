@@ -76,7 +76,14 @@ android {
       abortOnError false
     }
   }
+
+  // issue #195331
+  packagingOptions {
+    exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+    exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+  }
 }
+
 
 /*
 Add copy task to the mix (add the copy task after executing the build task)
@@ -92,4 +99,13 @@ project.afterEvaluate {
   }
 
   project.tasks['assemble'].dependsOn += ['copy2shared']
+
+  project.tasks.create(name: 'copyTests2shared', type: Copy, dependsOn: 'generateDebugAndroidTestXtext') {
+    from './build/generated/source/xtend/debugAndroidTest'
+    into '../shared/src/test/java'
+    include '**/*.java'
+  }
+
+  project.tasks['assembleDebugAndroidTest'].dependsOn += ['copyTests2shared']
+
 }
