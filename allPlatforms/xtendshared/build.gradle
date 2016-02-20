@@ -6,7 +6,7 @@ buildscript {scriptHandler->
     dependencies {
         classpath(project.ext.build.xtend_android_gradle)
         classpath(project.ext.build.xtext_gradle)
-	classpath(project.ext.build.android_gradle)
+        classpath(project.ext.build.android_gradle)
     }
 }
 
@@ -28,6 +28,7 @@ dependencies {
   compile(project.ext.lib.xtend)
   compile(project.ext.lib.android.support_v4)
   compile(project.ext.lib.android.appcompat_v7)
+  compile 'io.mikael:urlbuilder:2.0.5'
   compile project(':Xtendroid') // for @AndroidJsonized
 
   // testing

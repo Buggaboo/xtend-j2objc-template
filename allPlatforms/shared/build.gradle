@@ -16,9 +16,12 @@
 
 apply plugin: 'com.github.j2objccontrib.j2objcgradle'
 apply plugin: 'java'
+apply from: '../../Xtendroid/dependencies.gradle'
 
 dependencies {
     compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
+    compile     'io.mikael:urlbuilder:2.0.5'
+    compile     (project.ext.lib.xtend)
     testCompile 'junit:junit:4.12'
 }
 
