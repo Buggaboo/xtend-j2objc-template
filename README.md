@@ -29,14 +29,13 @@ Workflow
 --------
 
 1. Import ':xtendshared' into your IDE (intellij / Android Studio), work from there as usual; ':xtendshared' is its own gradle rootProject, because ':xtendshared' requires gradle-2.10, and j2objc-gradle requires gradle-2.3.
-2. Everytime ':xtendshared' is built (`./gradlew build`), the java files will be copied to the ':shared' project.
-3. Transpiling to j2objc, requires you run (`./gradlew build`) in the directory _allPlatforms_.
+2. Every time ':xtendshared' is built (`./gradlew build`), the java files will be copied to the ':shared' project.
+3. The same applies to `./gradlew cAT`, these will be transpiled to Objective C as well
+3. Transpiling to j2objc, requires you run (`./gradlew build j2objcBuild`) in the directory _allPlatforms_
 
 
 Roadmap
 -------
 
-* Autocopy unit tests (just like the java code), triggered by `:xtendshared:cAT`?.
 * Write a quotation apps in XCode (swift) and Android Studio (>2.0.0 alpha) that uses the :shared project.
-* Run unit tests in XCode (?)
-* Run java unit tests with `./gradlew :shared:test` from _allPlatforms_.
+* When j2obcj-gradle finally upgrades to >gradle-2.8, then we can merge the Xtendroid part
