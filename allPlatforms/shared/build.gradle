@@ -16,7 +16,16 @@
 
 apply plugin: 'com.github.j2objccontrib.j2objcgradle'
 apply plugin: 'java'
+apply plugin: 'org.xtext.xtend'
 apply from: '../../Xtendroid/dependencies.gradle'
+
+buildscript {scriptHandler->                                                                                               
+    apply from: '../../Xtendroid/repositories.gradle', to: scriptHandler
+    apply from: '../../Xtendroid/dependencies.gradle'
+    dependencies {
+        classpath(project.ext.build.xtext_gradle)
+    }
+}
 
 dependencies {
     compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
