@@ -2,6 +2,7 @@ package com.example.xtend.http
 
 import java.net.URL
 import java.net.HttpURLConnection
+import static java.net.HttpURLConnection.*
 import java.io.OutputStreamWriter
 import java.io.InputStreamReader
 import java.io.BufferedReader
@@ -10,9 +11,10 @@ import java.util.Map
 import java.util.List
 
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.Data
 
 import com.example.xtend.http.HttpRequestBase
-import org.eclipse.xtend.lib.annotations.Data
+
 
 abstract class HttpResponse
 {
@@ -58,13 +60,14 @@ abstract class HttpRequestBase
 
 class HttpRequest extends HttpRequestBase
 {
-    new (String urlString, String postData) {
+    new (String urlString, String verb, String postData) {
         this.urlString = urlString
+        this.method = verb
         this.postData = postData
     }
 
     new (String urlString) {
-        this(urlString, null)
+        this(urlString, 'GET', null)
     }
 
     public override execute(HttpResponse response)
@@ -95,7 +98,7 @@ class HttpRequest extends HttpRequestBase
         connection.readTimeout = READ_TIMEOUT
 
         try {
-            if ('POST'.equals(method) || 'PUT'.equals(method))
+            if (('POST'.equals(method) || 'PUT'.equals(method)) && !postData.isNullOrEmpty)
             {
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
                 connection.setRequestProperty("Content-Length", Integer.toString(postData.bytes.size))
@@ -122,10 +125,12 @@ class HttpRequest extends HttpRequestBase
 
             response.headers = connection.headerFields
 
-            response.code = connection.responseCode
+            val code = connection.responseCode
 
-            // is HTTP_OK the only valid response code? Is this the only _happy flow_?
-            if (HttpURLConnection.HTTP_OK == response.code) {
+            response.code = code
+
+            // NOTE: code == 304, is also a happy flow
+            if (HTTP_OK == code || HTTP_NOT_MODIFIED == code) {
                 // handle success
                 response.onSuccess(this as HttpRequestBase)
             } else {

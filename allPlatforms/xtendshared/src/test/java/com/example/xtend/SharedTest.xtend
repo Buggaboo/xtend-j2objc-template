@@ -30,11 +30,7 @@ class WikiPediaGeneral {}
 @AndroidJsonized("{\"pageid\":15580374,\"ns\":0,\"title\":\"Main Page\",\"revisions\":[{\"contentformat\":\"text/x-wiki\",\"contentmodel\":\"wikitext\"}]}")
 class WikiPediaPage {}
 
-class SharedHttpTest /*extends AndroidTestCase*/ {
-
-    // TODO add user agent to the header call
-
-    // TODO https vs http calls, requires extra coding?
+class SharedHttpTest {
 
     @Test
     public def testCallToWikiPediaRestService ()
@@ -50,7 +46,7 @@ class SharedHttpTest /*extends AndroidTestCase*/ {
         req.execute(new HttpResponse () {
 
             override onSuccess(HttpRequestBase request) {
-//                Log.d("Hello", String.format("%s produces %s", req.urlString, body)) // can't transpile
+//                Log.d("Hello", String.format("%s produces %s", req.urlString, body)) // can't transpile this, so avoid this code
                 assertNotNull(String.format("response (%s): %s", body, code), body)
             }
 
