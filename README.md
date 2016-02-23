@@ -3,8 +3,6 @@ Xtend 2 Java 2 Objective C
 
 This project is a demo on how to transpile to Obj C from Xtend.
 
-While using advanced concepts like [active annotations](http://todo).
-
 How to get this project up and running
 --------------------------------------
 
@@ -28,7 +26,7 @@ In a (tmux) terminal:
     
 Workflow
 --------
-
+0. Be consistent and build with jdk 1.7: `jenv shell 1.7`
 1. Import ':xtendshared' into your IDE (intellij / Android Studio), work from there as usual; ':xtendshared' is its own gradle rootProject, because ':xtendshared' requires gradle-2.10, and j2objc-gradle requires gradle-2.3.
 2. Every time ':xtendshared' is built (`./gradlew build`), the java files will be copied to the ':shared' project.
 3. The same applies to `./gradlew cAT`, these will be transpiled to Objective C as well
