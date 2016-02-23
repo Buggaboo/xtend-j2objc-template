@@ -47,7 +47,7 @@ class SharedHttpTest {
 
             override onSuccess(HttpRequestBase request) {
 //                Log.d("Hello", String.format("%s produces %s", req.urlString, body)) // can't transpile this, so avoid this code
-                assertNotNull(String.format("response (%s): %s", body, code), body)
+                assertNotNull(String.format("response (%s): %s", body.substring(5), code), body)
             }
 
             override onError(HttpRequestBase request, Exception e) {

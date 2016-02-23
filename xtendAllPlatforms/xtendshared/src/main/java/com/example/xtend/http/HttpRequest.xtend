@@ -55,6 +55,18 @@ abstract class HttpRequestBase
     @Accessors
     protected boolean closeConnectionAfterUse = false
 
+    public def HttpRequestBase withMethod(String method)
+    {
+        this.method = method
+        this
+    }
+
+    public def HttpRequestBase addHeader(String key, String value)
+    {
+        headers.put(key, value)
+        this
+    }
+
     public def void execute(HttpResponse response)
 }
 
@@ -130,7 +142,7 @@ class HttpRequest extends HttpRequestBase
             response.code = code
 
             // NOTE: code == 304, is also a happy flow
-            if (HTTP_OK == code || HTTP_NOT_MODIFIED == code) {
+            if (HTTP_OK == code || HTTP_NOT_MODIFIED == code || HTTP_NO_CONTENT == code || HTTP_CREATED == code) {
                 // handle success
                 response.onSuccess(this as HttpRequestBase)
             } else {

@@ -85,7 +85,7 @@ android {
   }
 }
 
-
+// TODO crap, I forgot I could do: sourceSets.main.java.srcDirs += [ '../xtendshared/build/generated/source/xtend/release' ] from ':shared'
 /*
 Add copy task to the mix (add the copy task after executing the build task)
 make the :app:build rely on a completed build by :xtendshared...
