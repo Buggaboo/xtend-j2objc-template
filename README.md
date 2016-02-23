@@ -14,9 +14,10 @@ In a (tmux) terminal:
 
 0. Install [brew](http://brew.sh/)
 1. First, install java jdk 1.7: `brew tap caskroom/versions ; brew cask install caskroom/versions/java7`, otherwise you will get a _café babe_. Caveat: **Do not run the install-osx-jdk7.sh** script unless you want to lose all your JDKs.
-2. Install [jenv](http://www.jenv.be/) and add your jdk environments to jenv: `brew install jenv ; find /Library/Java/JavirtualMachines -name 'Home' -exec jenv add {} \;`
+2. Install [jenv](http://www.jenv.be/) and add your jdk environments to jenv: `brew install jenv ; find /Library/Java/JavaVirtualMachines -name 'Home' -exec jenv add {} \;`
 3. Build the `jenv shell 1.7 ; cd j2objc-gradle ; ./gradlew clean build`
 4. run `./systemTests/install.sh && ./systemTests/run-all.sh` to verify you have a working system
+5. Change the directory to `./xtendAllPlatforms` and run the `run-me-first.sh` script
 
 **Prepare Xtendroid**
 
@@ -31,7 +32,7 @@ Workflow
 1. Import ':xtendshared' into your IDE (intellij / Android Studio), work from there as usual; ':xtendshared' is its own gradle rootProject, because ':xtendshared' requires gradle-2.10, and j2objc-gradle requires gradle-2.3.
 2. Every time ':xtendshared' is built (`./gradlew build`), the java files will be copied to the ':shared' project.
 3. The same applies to `./gradlew cAT`, these will be transpiled to Objective C as well
-3. Transpiling to j2objc, requires you run (`./gradlew build j2objcBuild`) in the directory _allPlatforms_
+3. Transpiling to j2objc, requires you run (`./gradlew build j2objcBuild`) in the directory `xtendAllPlatforms`
 
 
 Roadmap
