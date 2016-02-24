@@ -85,12 +85,15 @@ android {
   }
 }
 
-// TODO crap, I forgot I could do: sourceSets.main.java.srcDirs += [ '../xtendshared/build/generated/source/xtend/release' ] from ':shared'
-/*
+/**
 Add copy task to the mix (add the copy task after executing the build task)
 make the :app:build rely on a completed build by :xtendshared...
 but they can't share the same gradle ... since j2objc supports gradle-2.3,
 and xtend-android supports gradle-2.10
+
+That's also why I can't do the following to ':shared':
+sourceSets.main.java.srcDirs += [ '../xtendshared/build/generated/source/xtend/release' ]
+Because then I have to make ':Xtendroid' compile under gradle-2.3.
 */
 project.afterEvaluate {
   project.tasks.create(name: 'copy2shared', type: Copy, dependsOn: 'generateReleaseXtext') {

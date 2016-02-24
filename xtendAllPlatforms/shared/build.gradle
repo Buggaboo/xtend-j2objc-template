@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// Java to Objective C step (originally from Xtend)
+
 apply plugin: 'com.github.j2objccontrib.j2objcgradle'
 apply plugin: 'java'
 apply plugin: 'org.xtext.xtend'
