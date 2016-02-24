@@ -27,11 +27,23 @@ buildscript {scriptHandler->
     }
 }
 
+// version
+def urlbuilder_ver = '2.0.5'
+
 dependencies {
-    compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
-    compile     'io.mikael:urlbuilder:2.0.5'
-    compile     (project.ext.lib.xtend)
+
     testCompile 'junit:junit:4.12'
+
+    compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
+    compile     "io.mikael:urlbuilder:${urlbuilder_ver}"
+    compile     (project.ext.lib.xtend)
+
+    compile     "${project.ext.lib.xtend}:sources"
+
+    j2objcTranslation "io.mikael:urlbuilder:${urlbuilder_ver}:sources"
+    j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib.macro:${project.ext.xtend_lib_ver}:sources"
+    j2objcTranslation "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:${project.ext.xtend_lib_ver}:sources"
+    j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib:${project.ext.xtend_lib_ver}:sources"
 }
 
 j2objcConfig {
