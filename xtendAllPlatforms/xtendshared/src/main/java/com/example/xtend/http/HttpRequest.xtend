@@ -141,7 +141,7 @@ class HttpRequest extends HttpRequestBase
 
             response.code = code
 
-            // NOTE: code == 304, is also a happy flow
+            // NOTE: code 304, 204, 201, 200 are happy flows
             if (HTTP_OK == code || HTTP_NOT_MODIFIED == code || HTTP_NO_CONTENT == code || HTTP_CREATED == code) {
                 // handle success
                 response.onSuccess(this as HttpRequestBase)
