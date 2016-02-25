@@ -36,7 +36,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
-    compile     'org.json:json:20160212' // TODO determine how does j2objc transpile this
+    compile     'org.json:json:20160212'
     compile     "io.mikael:urlbuilder:${urlbuilder_ver}"
     compile     (project.ext.lib.xtend)
 
