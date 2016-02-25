@@ -14,7 +14,7 @@ In a (tmux) terminal:
 1. First, install java jdk 1.7: `brew tap caskroom/versions ; brew cask install caskroom/versions/java7`, otherwise you will get a [_café babe_](https://en.wikipedia.org/wiki/Java_class_file). Caveat: **Do not run the install-osx-jdk7.sh** script unless you want to lose all your JDKs.
 2. Install [jenv](http://www.jenv.be/) and add your jdk environments to jenv: `brew install jenv ; find /Library/Java/JavaVirtualMachines -name 'Home' -exec jenv add {} \;`
 3. Build the `jenv shell 1.7 ; cd j2objc-gradle ; ./gradlew clean build`
-4. Prepare the project itself: `cd xtendAllPlatforms ; ./run-me-first`
+4. Prepare the project itself, setup 'local.properties' for j2objc: `cd xtendAllPlatforms ; ./run-me-first`
 
 **Prepare Xtendroid**
 
