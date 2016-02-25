@@ -35,6 +35,6 @@ Workflow
 
 Roadmap
 -------
-
-* Write a quotation apps in XCode (swift) and Android Studio (>2.0.0 alpha) that uses the :shared project.
+* Create a task that determines the xtend code's package name, then obliterates ':shared' copy of the java files depending on that package name
+* Write a wiki quote apps in XCode (swift) and Android Studio (>2.0.0 alpha) that uses the :shared project, just like [the wikiquotes-api project](https://github.com/natetyler/wikiquotes-api).
 * When j2obcj-gradle finally upgrades to >gradle-2.8, then we can merge the Xtendroid part
