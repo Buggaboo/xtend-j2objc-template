@@ -1,2 +1,5 @@
 include(':Xtendroid')
 project(':Xtendroid').projectDir = new File(settingsDir, '../../Xtendroid/Xtendroid')
+
+include(':xtendshared')
+project(':xtendshared').projectDir = new File(settingsDir, '../xtendshared')

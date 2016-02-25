@@ -17,10 +17,15 @@ build
 # Local configuration file (sdk path, etc)
 local.properties
 
+# backups
 *~
+
+# gradle artefacts
 .gradle
 build
 gradle.properties
+gradle/
+gradlew.bat
 
 # IDEA
 ./out
@@ -31,3 +36,8 @@ gradle.properties
 # Pod
 Pods/
 Podfile.lock
+
+# eclipse
+.classpath
+.project
+.settings/
