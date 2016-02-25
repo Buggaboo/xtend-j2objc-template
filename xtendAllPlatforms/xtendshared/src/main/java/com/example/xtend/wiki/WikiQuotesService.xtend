@@ -15,13 +15,13 @@ import java.util.Map
 
 class WikiQuotesService {
 
-    // syntactial sugar
+    // syntactial sugar // TODO fix, it doesn't actually add the parameters
     static def UrlBuilder addParameters (UrlBuilder builder, Map<String, String> parameters) {
         parameters.entrySet.forEach [ builder.addParameter(it.key, it.value) ]
         builder
     }
 
-    static val sServer    = 'en.wikiquote.org'
+    static val sServer    = 'https://en.wikiquote.org' // TODO determine if this fixes anything
     static val sPath      = '/w/api.php'
     static val sUserAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:43.0) Gecko/20100101 Firefox/43.0'
         /*
@@ -61,8 +61,10 @@ X-Analytics: WMF-Last-Access=24-Feb-2016;https=1
 X-Client-IP: 87.213.22.20*/
 
     // sugared up
-    public static def void openSearch(HttpResponse response, String who, long milliSecondTimeStamp)
+    public static def void openSearch(HttpResponse response, String who)
     {
+        /*
+        // TODO fix
         val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath).addParameters(
             #{
                 'format' -> 'json'
@@ -70,9 +72,16 @@ X-Client-IP: 87.213.22.20*/
                 , 'namespace' -> '0' // ?
                 , 'suggest' -> '' // ?
                 , 'search' -> who // George+Washington
-                , '_' -> Long.toString(milliSecondTimeStamp)
             }
         )
+        */
+
+        val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
+        .addParameter('format', 'json')
+        .addParameter('action', 'opensearch')
+        .addParameter('namespace', '0') // ?
+        .addParameter('suggest', '') // ?
+        .addParameter('search', who) // George+Washington
 
         new HttpRequest(urlBuilder.toString).addHeaders(
             #{
@@ -121,14 +130,15 @@ X-Cache: cp1052 miss+chfp(0), cp3040 miss+chfp(0), cp3008 frontend miss+chfp(0)
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 X-Analytics: WMF-Last-Access=24-Feb-2016;https=1
 X-Client-IP: 87.213.22.20*/
-    public static def void queryTitles(HttpResponse response, String titles, long milliSecondTimeStamp)
+
+    // TODO shitty on android, shitty on iOS
+    public static def void queryTitles(HttpResponse response, String titles)
     {
         val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
         .addParameter('format', 'json')
         .addParameter('action', 'query')
         .addParameter('redirects', '')
         .addParameter('titles', titles)
-        .addParameter('_', Long.toString(milliSecondTimeStamp))
 
         new HttpRequest(urlBuilder.toString)
         .addHeader('User-Agent', sUserAgent)
@@ -176,14 +186,13 @@ X-Cache: cp1065 miss+chfp(0), cp3041 miss+chfp(0), cp3008 frontend miss+chfp(0)
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 X-Analytics: WMF-Last-Access=24-Feb-2016;https=1
 X-Client-IP: 87.213.22.20*/
-    public static def void parseSections(HttpResponse response, String pageId, long milliSecondTimeStamp)
+    public static def void parseSections(HttpResponse response, String pageId)
     {
         val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
         .addParameter('format', 'json')
         .addParameter('action', 'parse')
         .addParameter('prop', 'sections')
         .addParameter('pageid', pageId)
-        .addParameter('_', Long.toString(milliSecondTimeStamp))
 
         new HttpRequest(urlBuilder.toString)
         .addHeader('User-Agent', sUserAgent)
@@ -231,7 +240,9 @@ X-Cache: cp1068 miss+chfp(0), cp3006 miss+chfp(0), cp3008 frontend miss+chfp(0)
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 X-Analytics: WMF-Last-Access=24-Feb-2016;https=1
 X-Client-IP: 87.213.22.20*/
-    public static def void parsePage(HttpResponse response, String pageId, long milliSecondTimeStamp)
+
+    // TODO fix on iOS, something is wrong with UrlBuilder, excellent on Android
+    public static def void parsePage(HttpResponse response, String pageId)
     {
         val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
         .addParameter('format', 'json')
@@ -239,7 +250,6 @@ X-Client-IP: 87.213.22.20*/
         .addParameter('noimages', '')
         .addParameter('pageid', pageId)
         .addParameter('section', '1') // TODO randomize?
-        .addParameter('_', Long.toString(milliSecondTimeStamp))
 
         new HttpRequest(urlBuilder.toString)
         .addHeader('User-Agent', sUserAgent)

@@ -29,13 +29,14 @@ class ShareWikiQuotesTest {
         {
             override onSuccess(HttpRequestBase request) {
                 assertNotNull(body)
+                println(String.format("%s %s", request.method, request.urlString))
                 println(body)
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(e.toString)
+                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
-        }, 'George+Washington', time)
+        }, 'George+Washington')
     }
 
     @Test
@@ -45,13 +46,14 @@ class ShareWikiQuotesTest {
         {
             override onSuccess(HttpRequestBase request) {
                 assertNotNull(body)
+                println(String.format("%s %s", request.method, request.urlString))
                 println(body)
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(e.toString)
+                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
-        }, 'George+Washington', time)
+        }, 'George+Washington')
     }
 
     @Test
@@ -61,13 +63,14 @@ class ShareWikiQuotesTest {
         {
             override onSuccess(HttpRequestBase request) {
                 assertNotNull(body)
+                println(String.format("%s %s", request.method, request.urlString))
                 println(body)
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(e.toString)
+                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
-        }, '125733', time)
+        }, '125733')
     }
 
     @Test
@@ -77,13 +80,14 @@ class ShareWikiQuotesTest {
         {
             override onSuccess(HttpRequestBase request) {
                 assertNotNull(body)
+                println(String.format("%s %s", request.method, request.urlString))
                 println(body)
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(e.toString)
+                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n\t"), e?.toString))
             }
-        }, '7051', time)
+        }, '7051')
     }
 
 }
