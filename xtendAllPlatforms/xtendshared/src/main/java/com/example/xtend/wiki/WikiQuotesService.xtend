@@ -2,10 +2,8 @@ package com.example.xtend.wiki
 
 import com.example.xtend.http.HttpRequest
 import com.example.xtend.http.HttpResponse
-//import io.mikael.urlbuilder.UrlBuilder
 import java.util.Map
 import static java.net.URLEncoder.*
-//import android.net.Uri
 
 /**
  * Created by jasmsison on 25/02/16.
@@ -16,14 +14,6 @@ import static java.net.URLEncoder.*
  */
 
 class WikiQuotesService {
-
-    // syntactial sugar // TODO fix, it doesn't actually add the parameters
-    /*
-    static def UrlBuilder addParameters (UrlBuilder builder, Map<String, String> parameters) {
-        parameters.entrySet.forEach [ builder.addParameter(it.key, it.value) ]
-        builder
-    }
-    */
 
     static def String addParameters (String startUrl, Map<String, String> parameters)
     {
@@ -82,22 +72,6 @@ X-Client-IP: 87.213.22.20*/
     // sugared up
     public static def void openSearch(HttpResponse response, String who)
     {
-/*
-        val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
-        .addParameter('format', 'json')
-        .addParameter('action', 'opensearch')
-        .addParameter('namespace', '0') // ?
-        .addParameter('suggest', '') // ?
-        .addParameter('search', who) // George+Washington
-
-        val uriBuilder = Uri.parse(sServer + sPath).buildUpon
-        .appendQueryParameter('format', 'json')
-        .appendQueryParameter('action', 'opensearch')
-        .appendQueryParameter('namespace', '0') // ?
-        .appendQueryParameter('suggest', '') // ?
-        .appendQueryParameter('search', who) // George+Washington
-        .build
-*/
         val urlBuilder = sPartialUrl.addParameters(
                 #{
                     'format' -> 'json'
@@ -108,7 +82,7 @@ X-Client-IP: 87.213.22.20*/
                 }
         )
 
-        new HttpRequest(/*urlBuilder.toString uriBuilder.toString*/ urlBuilder).addHeaders(
+        new HttpRequest(urlBuilder).addHeaders(
             #{
                 'User-Agent'-> sUserAgent
                 , 'Accept'-> '*/*'
@@ -159,20 +133,6 @@ X-Client-IP: 87.213.22.20*/
     // TODO shitty on android, shitty on iOS
     public static def void queryTitles(HttpResponse response, String titles)
     {
-/*
-        val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
-        .addParameter('format', 'json')
-        .addParameter('action', 'query')
-        .addParameter('redirects', '')
-        .addParameter('titles', titles)
-
-        val uriBuilder = Uri.parse(sServer + sPath).buildUpon
-        .appendQueryParameter('format', 'json')
-        .appendQueryParameter('action', 'query')
-        .appendQueryParameter('redirects', '')
-        .appendQueryParameter('titles', titles)
-        .build
-*/
         val urlBuilder = sPartialUrl.addParameters(#{
             'format' -> 'json'
             , 'action' -> 'query'
@@ -180,7 +140,7 @@ X-Client-IP: 87.213.22.20*/
             , 'titles' -> titles
         })
 
-        new HttpRequest(/*urlBuilder.toString uriBuilder.toString*/ urlBuilder)
+        new HttpRequest(urlBuilder)
         .addHeader('User-Agent', sUserAgent)
         .addHeader('Accept', '*/*')
         .addHeader('Accept-Language','nl,en-US;q=0.7,en;q=0.3')
@@ -228,20 +188,6 @@ X-Analytics: WMF-Last-Access=24-Feb-2016;https=1
 X-Client-IP: 87.213.22.20*/
     public static def void parseSections(HttpResponse response, String pageId)
     {
-/*
-        val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
-        .addParameter('format', 'json')
-        .addParameter('action', 'parse')
-        .addParameter('prop', 'sections')
-        .addParameter('pageid', pageId)
-
-        val uriBuilder = Uri.parse(sServer + sPath).buildUpon
-        .appendQueryParameter('format', 'json')
-        .appendQueryParameter('action', 'parse')
-        .appendQueryParameter('prop', 'sections')
-        .appendQueryParameter('pageid', pageId)
-        .build
-*/
         val urlBuilder = sPartialUrl.addParameters(#{
             'format' -> 'json'
             , 'action' -> 'parse'
@@ -249,7 +195,7 @@ X-Client-IP: 87.213.22.20*/
             , 'pageid' -> pageId
         })
 
-        new HttpRequest(/*urlBuilder.toString uriBuilder.toString*/ urlBuilder)
+        new HttpRequest(urlBuilder)
         .addHeader('User-Agent', sUserAgent)
         .addHeader('Accept', '*/*')
         .addHeader('Accept-Language','nl,en-US;q=0.7,en;q=0.3')
@@ -299,26 +245,6 @@ X-Client-IP: 87.213.22.20*/
     // TODO fix on iOS, something is wrong with UrlBuilder, excellent on Android
     public static def void parsePage(HttpResponse response, String pageId)
     {
-        // broken transition to j2objc
-/*
-        val urlBuilder = UrlBuilder.fromString(sServer).withPath(sPath)
-        .addParameter('format', 'json')
-        .addParameter('action', 'parse')
-        .addParameter('noimages', '')
-        .addParameter('pageid', pageId)
-        .addParameter('section', '1') // TODO randomize?
-*/
-
-        // broken beyond the android context
-/*
-        val uriBuilder = Uri.parse(sServer + sPath).buildUpon
-        .appendQueryParameter('format', 'json')
-        .appendQueryParameter('action', 'parse')
-        .appendQueryParameter('noimages', '')
-        .appendQueryParameter('pageid', pageId)
-        .appendQueryParameter('section', '1') // TODO randomize?
-        .build
-*/
         val urlBuilder = sPartialUrl.addParameters(#{
             'format' -> 'json'
             , 'action' -> 'parse'
@@ -327,7 +253,7 @@ X-Client-IP: 87.213.22.20*/
             , 'section' -> '1' // TODO randomize?
         })
 
-        new HttpRequest(/*urlBuilder.toString uriBuilder.toString*/ urlBuilder)
+        new HttpRequest(urlBuilder)
         .addHeader('User-Agent', sUserAgent)
         .addHeader('Accept', '*/*')
         .addHeader('Accept-Language','nl,en-US;q=0.7,en;q=0.3')
