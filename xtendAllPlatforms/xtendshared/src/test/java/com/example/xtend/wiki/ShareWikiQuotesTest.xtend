@@ -33,8 +33,10 @@ class ShareWikiQuotesTest {
                 println(body)
             }
 
+            // TODO refactor out String#format
             override onError(HttpRequestBase request, Exception e) {
                 fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
         }, 'George+Washington')
     }
@@ -52,6 +54,7 @@ class ShareWikiQuotesTest {
 
             override onError(HttpRequestBase request, Exception e) {
                 fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
         }, 'George+Washington')
     }
@@ -69,6 +72,7 @@ class ShareWikiQuotesTest {
 
             override onError(HttpRequestBase request, Exception e) {
                 fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
             }
         }, '125733')
     }
@@ -86,6 +90,7 @@ class ShareWikiQuotesTest {
 
             override onError(HttpRequestBase request, Exception e) {
                 fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n\t"), e?.toString))
+                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n\t"), e?.toString))
             }
         }, '7051')
     }

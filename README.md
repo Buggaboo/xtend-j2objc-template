@@ -38,3 +38,9 @@ Roadmap
 * Create a task that determines the xtend code's package name, then obliterates ':shared' copy of the java files depending on that package name
 * Write a wiki quote apps in XCode (swift) and Android Studio (>2.0.0 alpha) that uses the :shared project, just like [the wikiquotes-api project](https://github.com/natetyler/wikiquotes-api).
 * When j2obcj-gradle finally upgrades to >gradle-2.8, then we can merge the Xtendroid part
+
+Handy things to know
+--------------------
+* Forget about URI.Builder, also forget UrlBuilder, roll your own
+* Run unit tests with `xtendAllPlatforms> ./gradlew cleanTest test` and if you're confident `./gradlew build`
+* Transpile from Xtend to java with `xtendshared> ./gradlew build cAT`, which triggers the copy actions
