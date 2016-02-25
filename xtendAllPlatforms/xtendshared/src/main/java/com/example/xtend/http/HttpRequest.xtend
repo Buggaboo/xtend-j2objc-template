@@ -25,7 +25,7 @@ abstract class HttpResponse
     String body
 
     @Accessors
-    protected Map<String, List<String>> headers
+    Map<String, List<String>> headers
 
     def void onSuccess(HttpRequestBase request)
     def void onError(HttpRequestBase request, Exception e)
@@ -34,36 +34,27 @@ abstract class HttpResponse
 abstract class HttpRequestBase
 {
     @Accessors
-    protected String method = 'GET'
+    String method = 'GET'
 
     @Accessors
-    protected String urlString
+    String urlString
 
     @Accessors
-    protected val headers = #{'User-Agent' -> 'github.com:Buggaboo/xtend-j2objc-template'}
+    String postData
 
     @Accessors
-    protected String postData
-
-    @Accessors
-    protected boolean useCaches = false
+    boolean useCaches = false
 
     // TODO experiment!
-    protected val CONNECT_TIMEOUT = 10000
-    protected val READ_TIMEOUT    = 10000
+    public val CONNECT_TIMEOUT = 10000
+    public val READ_TIMEOUT    = 10000
 
     @Accessors
-    protected boolean closeConnectionAfterUse = false
+    boolean closeConnectionAfterUse = false
 
     public def HttpRequestBase withMethod(String method)
     {
         this.method = method
-        this
-    }
-
-    public def HttpRequestBase addHeader(String key, String value)
-    {
-        headers.put(key, value)
         this
     }
 
@@ -80,6 +71,22 @@ class HttpRequest extends HttpRequestBase
 
     new (String urlString) {
         this(urlString, 'GET', null)
+    }
+
+    @Accessors
+    var Map<String, String> headers
+
+    public def HttpRequest addHeaders(Map<String, String> headers)
+    {
+        this.headers = headers
+        this
+    }
+
+    public def HttpRequest addHeader(String key, String value)
+    {
+        if (headers == null) { headers = #{} }
+        this.headers.put(key, value)
+        this
     }
 
     public override execute(HttpResponse response)
