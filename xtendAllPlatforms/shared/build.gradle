@@ -46,6 +46,10 @@ dependencies {
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib:${project.ext.xtend_lib_ver}:sources"
 }
 
+test {
+  testLogging.showStandardStreams = true
+}
+
 j2objcConfig {
     // This should eventually become the default but doesn't have any use within this example
     autoConfigureDeps true
