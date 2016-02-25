@@ -25,6 +25,7 @@ local.properties
 build
 gradle.properties
 gradle/
+gradlew
 gradlew.bat
 
 # IDEA
