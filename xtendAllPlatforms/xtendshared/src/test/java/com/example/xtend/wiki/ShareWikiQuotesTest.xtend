@@ -1,6 +1,5 @@
 package com.example.xtend.wiki
 
-import io.mikael.urlbuilder.UrlBuilder
 import com.example.xtend.http.HttpResponse
 import com.example.xtend.http.HttpRequest
 import org.junit.Test
@@ -11,15 +10,16 @@ import static org.junit.Assert.*
 
 import static com.example.xtend.wiki.WikiQuotesService.*
 import com.example.xtend.http.HttpRequestBase
+import java.util.Map
 
 /**
  * Created by jasmsison on 25/02/16.
  */
 class ShareWikiQuotesTest {
 
-    def long getTime()
+    static def String formatDebugMessage(HttpResponse rp, Exception e)
     {
-        new Date().time
+        String.format("code (%s), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
     }
 
     @Test
@@ -33,10 +33,9 @@ class ShareWikiQuotesTest {
                 println(body)
             }
 
-            // TODO refactor out String#format
             override onError(HttpRequestBase request, Exception e) {
-                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
-                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(formatDebugMessage(e))
+                fail(formatDebugMessage(e))
             }
         }, 'George+Washington')
     }
@@ -53,8 +52,8 @@ class ShareWikiQuotesTest {
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
-                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(formatDebugMessage(e))
+                fail(formatDebugMessage(e))
             }
         }, 'George+Washington')
     }
@@ -71,8 +70,8 @@ class ShareWikiQuotesTest {
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
-                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString))
+                println(formatDebugMessage(e))
+                fail(formatDebugMessage(e))
             }
         }, '125733')
     }
@@ -89,8 +88,8 @@ class ShareWikiQuotesTest {
             }
 
             override onError(HttpRequestBase request, Exception e) {
-                fail(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n\t"), e?.toString))
-                println(String.format("code (%s), %s, %s", code, headers.entrySet.map [ it.key + ':' + it.value ].join("\n\t"), e?.toString))
+                println(formatDebugMessage(e))
+                fail(formatDebugMessage(e))
             }
         }, '7051')
     }
