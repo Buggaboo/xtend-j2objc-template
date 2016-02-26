@@ -67,14 +67,13 @@ abstract class HttpRequestBase
 
 class HttpRequest extends HttpRequestBase
 {
-    new (String urlString, String verb, String postData) {
+    new (String urlString, String postData) {
         this.urlString = urlString
-        this.method = verb
         this.postData = postData
     }
 
     new (String urlString) {
-        this(urlString, 'GET', null)
+        this(urlString, null)
     }
 
     @Accessors
