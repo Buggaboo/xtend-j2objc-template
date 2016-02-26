@@ -207,7 +207,33 @@ class HttpRequest extends HttpRequestBase
             connection.disconnect()
         }
     }
+
+    static public class Response extends HttpResponse
+    {
+        (HttpRequest, HttpResponse)=>void onSuccess
+        (HttpRequest, HttpResponse, Exception)=>void onError
+
+        new ((HttpRequest, HttpResponse)=>void onSuccess, (HttpRequest, HttpResponse, Exception)=>void onError)
+        {
+            this.onSuccess = onSuccess
+            this.onError   = onError
+        }
+
+        override onSuccess(HttpRequestBase request) {
+            onSuccess.apply(request as HttpRequest, this)
+        }
+
+        override onError(HttpRequestBase request, Exception e) {
+            onError.apply(request as HttpRequest, this, e)
+        }
+    }
+
+    public def run((HttpRequest, HttpResponse)=>void onSuccess, (HttpRequest, HttpResponse, Exception)=>void onError)
+    {
+        this.execute(new Response(onSuccess, onError))
+    }
 }
+
 
 /*
 // TODO

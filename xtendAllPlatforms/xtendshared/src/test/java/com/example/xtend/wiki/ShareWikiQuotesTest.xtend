@@ -2,6 +2,7 @@ package com.example.xtend.wiki
 
 import com.example.xtend.http.HttpResponse
 import com.example.xtend.http.HttpRequest
+import com.example.xtend.http.HttpRequest.Response
 import org.junit.Test
 import org.json.JSONObject
 import java.util.Date
@@ -37,7 +38,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        }, 'George+Washington')
+        } as HttpResponse, 'George+Washington')
     }
 
     @Test
@@ -55,7 +56,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        }, 'George+Washington')
+        } as HttpResponse, 'George+Washington')
     }
 
     @Test
@@ -73,7 +74,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        }, '125733')
+        } as HttpResponse, '125733')
     }
 
     @Test
@@ -91,7 +92,31 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        }, '7051')
+        } as HttpResponse, '7051')
+    }
+
+    @Test
+    def testXtendOpenSearch() throws Exception
+    {
+        openSearch(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, 'George+Washington')
+    }
+
+    @Test
+    def testXtendQueryTitles() throws Exception
+    {
+        queryTitles(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, 'George+Washington')
+    }
+
+    @Test
+    def testXtendParseSections() throws Exception
+    {
+        parseSections(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, '125733')
+    }
+
+    @Test
+    def testXtendParsePage() throws Exception
+    {
+        parsePage(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, '7051')
     }
 
 }

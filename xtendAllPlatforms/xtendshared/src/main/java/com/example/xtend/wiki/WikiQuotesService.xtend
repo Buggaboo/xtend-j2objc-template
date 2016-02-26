@@ -92,7 +92,7 @@ X-Client-IP: 87.213.22.20*/
                 , 'Cookie'-> 'WMF-Last-Access=24-Feb-2016; GeoIP=NL:07:Amsterdam:52.37:4.89:v4'
                 , 'DNT'-> '1' // ?
             }
-        ).execute(response)
+        ).execute(response as HttpResponse)
     }
 
 /*
@@ -149,7 +149,7 @@ X-Client-IP: 87.213.22.20*/
         .addHeader('Cookie','WMF-Last-Access=24-Feb-2016; GeoIP=NL:07:Amsterdam:52.37:4.89:v4')
         .addHeader('DNT','1')
         .addHeader('Connection','keep-alive')
-        .execute(response)
+        .execute(response as HttpResponse)
     }
 
 /*
@@ -204,7 +204,7 @@ X-Client-IP: 87.213.22.20*/
         .addHeader('Cookie','WMF-Last-Access=24-Feb-2016; GeoIP=NL:07:Amsterdam:52.37:4.89:v4')
         .addHeader('DNT','1')
 
-        .execute(response)
+        .execute(response as HttpResponse)
     }
 
 /*
@@ -262,6 +262,6 @@ X-Client-IP: 87.213.22.20*/
         .addHeader('Cookie','WMF-Last-Access=24-Feb-2016; GeoIP=NL:07:Amsterdam:52.37:4.89:v4')
         .addHeader('DNT','1')
 
-        .execute(response)
+        .execute(response as HttpResponse)
     }
 }
