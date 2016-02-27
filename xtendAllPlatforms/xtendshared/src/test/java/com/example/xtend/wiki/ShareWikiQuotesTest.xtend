@@ -2,6 +2,8 @@ package com.example.xtend.wiki
 
 import com.example.xtend.http.HttpResponse
 import com.example.xtend.http.HttpRequest
+import com.example.xtend.http.HttpRp
+import com.example.xtend.http.HttpRq
 import com.example.xtend.http.HttpRequest.Response
 import org.junit.Test
 import org.json.JSONObject
@@ -18,7 +20,7 @@ import java.util.Map
  */
 class ShareWikiQuotesTest {
 
-    static def String formatDebugMessage(HttpResponse rp, Exception e)
+    public static def String formatDebugMessage(HttpResponse rp, Exception e)
     {
         String.format("code (%s), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
     }
@@ -38,7 +40,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        } as HttpResponse, 'George+Washington')
+        }, 'George+Washington')
     }
 
     @Test
@@ -56,7 +58,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        } as HttpResponse, 'George+Washington')
+        }, 'George+Washington')
     }
 
     @Test
@@ -74,7 +76,7 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        } as HttpResponse, '125733')
+        }, '125733')
     }
 
     @Test
@@ -92,31 +94,65 @@ class ShareWikiQuotesTest {
                 println(formatDebugMessage(e))
                 fail(formatDebugMessage(e))
             }
-        } as HttpResponse, '7051')
+        }, '7051')
     }
 
     @Test
     def testXtendOpenSearch() throws Exception
     {
-        openSearch(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, 'George+Washington')
+        openSearch(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), 'Michael+Jackson')
     }
 
     @Test
     def testXtendQueryTitles() throws Exception
     {
-        queryTitles(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, 'George+Washington')
+        queryTitles(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), 'Buddha')
     }
 
     @Test
     def testXtendParseSections() throws Exception
     {
-        parseSections(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, '125733')
+        parseSections(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), '125737')
     }
 
     @Test
     def testXtendParsePage() throws Exception
     {
-        parsePage(new Response([rq,rp|], [rq,rp,e|]) as HttpResponse, '7051')
+        parsePage(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), '7081')
     }
 
+}
+
+class SharedWikiQuotesTestNewApproachTest
+{
+    public static def String formatDebugMessage(HttpRp rp, Exception e)
+    {
+        String.format("code (%s), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
+    }
+
+    @Test
+    def testXtendOpenSearchNewApproach() throws Exception
+    {
+        var (HttpRq, HttpRp) => void success = [rq, rp|]
+        var (HttpRq, HttpRp, Exception) => void failure = [rq, rp, e| fail(formatDebugMessage(rp,e))]
+        openSearchNewApproach(success, failure, 'Michael+Jackson')
+    }
+
+    @Test
+    def testXtendQueryTitlesNewApproach() throws Exception
+    {
+        queryTitlesNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], 'Buddha')
+    }
+
+    @Test
+    def testXtendParseSectionsNewApproach() throws Exception
+    {
+        parseSectionsNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], '125737')
+    }
+
+    @Test
+    def testXtendParsePageNewApproach() throws Exception
+    {
+        parsePageNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], '7081')
+    }
 }
