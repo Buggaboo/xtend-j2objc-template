@@ -29,14 +29,21 @@ buildscript {scriptHandler->
     }
 }
 
+def GUAVA_VER = '19.0'
+
 dependencies {
 
     testCompile 'junit:junit:4.12'
 
     compile     'org.json:json:20160212'
 
+    compile     'org.codehaus.mojo:animal-sniffer-annotations:1.14'
+    compile     'com.google.j2objc:j2objc-annotations:0.9.8'
+    compile     'com.google.code.findbugs:jsr305:3.0.1'
+    compile     "com.google.guava:guava:${GUAVA_VER}"
     compile     (project.ext.lib.xtend)
 
+    j2objcTranslation "com.google.guava:guava:${GUAVA_VER}:sources"
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib.macro:${project.ext.xtend_lib_ver}:sources"
     j2objcTranslation "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:${project.ext.xtend_lib_ver}:sources"
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib:${project.ext.xtend_lib_ver}:sources"
@@ -49,6 +56,8 @@ test {
 j2objcConfig {
     // This should eventually become the default but doesn't have any use within this example
     autoConfigureDeps true
+
+//    translateArgs '--ignore-missing-imports' // no longer supported
 
     // Xcode
     xcodeProjectDir '../ios'
