@@ -176,39 +176,20 @@ class SharedWikiQuotesOkHttpTest {
     @Test
     def testOpenSearch() throws Exception
     {
-        /**
-            client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Request request, IOException throwable) {
-        throwable.printStackTrace();
-      }
-
-      @Override public void onResponse(Response response) throws IOException {
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-        Headers responseHeaders = response.headers();
-        for (int i = 0; i < responseHeaders.size(); i++) {
-          System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-        }
-
-        System.out.println(response.body().string());
-      }
-    });
-        */
         openSearch(new Callback () {
             override void onFailure(Call call, IOException throwable) {
                 throwable.printStackTrace()
+                fail()
             }
 
             override void onResponse (Call call, Response response) throws IOException {
-/*
                 if (!response.isSuccessful) throw new IOException("Unexpected code " + response);
 
-                Headers responseHeaders = response.headers
+                val responseHeaders = response.headers
                 for (var i = 0; i < responseHeaders.size; i++) {
                     println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
                 }
                 println(response.body.string)
-*/
             }
         }, 'Madonna')
     }
