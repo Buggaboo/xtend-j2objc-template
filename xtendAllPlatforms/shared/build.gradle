@@ -32,6 +32,13 @@ buildscript {scriptHandler->
 def OKIO_VER = '1.6.0'
 def OKHTTP_VER = '3.2.0'
 
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+// Dude, where are my jars?
+def j2objc_libs = properties.getProperty('j2objc.home') + '/lib'
+
 dependencies {
 
     testCompile 'junit:junit:4.12'
@@ -43,6 +50,15 @@ dependencies {
 
     compile     (project.ext.lib.xtend)
 
+    // Attempt to make okHttp build
+    compile     'org.codehaus.mojo:animal-sniffer-annotations:1.14'
+    compile     fileTree(dir: j2objc_libs, include: ['*.jar'])
+
+
+    // TODO add a task to scrub the libraries from android specific functions
+    // even if jre_emul.jar, does support them for some reason
+    // I don't really understand the discussion [here](https://github.com/j2objc-contrib/j2objc-gradle/issues/181):
+    /* for file in $(find . -name '*.java' -exec grep -l Log.d {} \;); do echo sed -i -e '/Log.d/d;/import android/d' $file; done */
     j2objcTranslation "com.squareup.okio:okio:${OKIO_VER}:sources"
     j2objcTranslation "com.squareup.okhttp3:okhttp:${OKHTTP_VER}:sources"
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib.macro:${project.ext.xtend_lib_ver}:sources"
@@ -52,6 +68,12 @@ dependencies {
 
 test {
   testLogging.showStandardStreams = true
+}
+
+// In case of: [superClassName is empty!](http://stackoverflow.com/questions/14814837/gradle-test-fails-with-error)
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Test.class" // whatever Ant pattern matches your test class files
 }
 
 j2objcConfig {
