@@ -11,7 +11,6 @@ import java.util.Map
 import java.util.List
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtend.lib.annotations.Data
 
 import com.example.xtend.http.HttpRequestBase
 import javax.net.ssl.HttpsURLConnection
@@ -54,10 +53,116 @@ class HttpRq extends HttpRequestBase
         rq
     }
 
+    // https://groups.google.com/forum/#!topic/j2objc-discuss/Rxhxm8iqGH0
+    public static def sh(HttpRq rq,
+        (HttpRq, HttpRp)=>void onSuccess,
+        (HttpRq, HttpRp, Exception)=>void onError)
+    {
+        // There must be a better way to do this...
+        // oh yeah, extension, but it "cannot make a static reference to the non-static"
+        val urlString = rq.urlString
+        val method = rq.method
+        val headers = rq.headers
+        val postData = rq.postData
+        val useCaches = rq.useCaches
+        val closeConnectionAfterUse = rq.closeConnectionAfterUse
+
+        val rp = new HttpRp
+
+        val url = new URL(urlString)
+
+        var HttpURLConnection connection = null
+        try {
+            connection = url.openConnection as HttpURLConnection
+            for (i : headers.entrySet)
+            {
+                connection.addRequestProperty(i.key, i.value)
+            }
+        } catch(java.io.IOException e) {
+            onError.apply(rq, rp, e)
+        }
+        try {
+            connection.requestMethod = method
+        } catch(java.net.ProtocolException e) {
+            onError.apply(rq, rp, e)
+        }
+
+        connection.doInput = true
+        connection.useCaches = useCaches
+
+        connection.connectTimeout = HttpRequestBase.CONNECT_TIMEOUT
+        connection.readTimeout = HttpRequestBase.READ_TIMEOUT
+
+        try {
+            // TODO determine if DELETE is also a POST-type?
+            if (('POST'.equals(method) || 'PUT'.equals(method)) && !postData.isNullOrEmpty)
+            {
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
+                connection.setRequestProperty("Content-Length", Integer.toString(postData.bytes.size))
+                connection.doOutput = true
+                val out = new OutputStreamWriter(connection.outputStream)
+                out.write(postData)
+                out.close
+            }
+
+            val encoding = connection.contentEncoding
+
+
+            val in = new BufferedReader(
+                    new InputStreamReader(if ('gzip'.equals(encoding)) new GZIPInputStream(connection.inputStream) else connection.inputStream)
+            )
+            val rBuilder = new StringBuffer
+            var String decodedString
+            while ((decodedString = in.readLine()) != null) {
+                rBuilder.append(decodedString)
+            }
+            in.close()
+
+            val output = rBuilder.toString
+
+            if (encoding == null || 'gzip'.equals(encoding))
+            {
+                StandardCharsets.UTF_8.encode(output)
+            }else
+            {
+                Charset.forName(encoding).encode(output)
+            }
+
+            val responseBody = output
+
+            if (!responseBody.isEmpty)
+            {
+                rp.body = responseBody
+            }
+
+            rp.headers = connection.headerFields
+
+            val code = connection.responseCode
+
+            rp.code = code
+
+            // NOTE: code 304, 204, 201, 200 are happy flows
+            if (HTTP_OK == code || HTTP_NOT_MODIFIED == code || HTTP_NO_CONTENT == code || HTTP_CREATED == code) {
+                // handle success
+                onSuccess.apply(rq, rp)
+            } else {
+                // handle error code
+                onError.apply(rq, rp, null)
+            }
+        } catch(java.io.IOException e) {
+            onError.apply(rq, rp, e)
+        }
+
+        if (connection != null && closeConnectionAfterUse) {
+            connection.disconnect()
+        }
+    }
+
+
     // trying a different approach
     // see if extension can be applied
     // this agrees more with ObjC method dispatch style (sorry, protocol messaging shizzle)
-    public static def shoot(/*extension*/ HttpRq rq, (HttpRq, HttpRp)=>void onSuccess,
+    public static def shoot(HttpRq rq, (HttpRq, HttpRp)=>void onSuccess,
         (HttpRq, HttpRp, Exception)=>void onError)
     {
         // There must be a better way to do this...
@@ -75,18 +180,17 @@ class HttpRq extends HttpRequestBase
 
         var HttpsURLConnection secureConnection = null
         try {
+
             if (urlString.startsWith('https')) {
                 // TODO do additional stuff with the secure connection
                 // like certificate pinning etc.
                 secureConnection = url.openConnection as HttpsURLConnection
-
                 // Create the SSL connection using local certificates
                 val sc = SSLContext.getInstance("TLS")
 
                 // TODO SecureRandom is for shit with the default seed (aka pid), increase entropy of the seed
                 sc.init(null, null, new java.security.SecureRandom)
                 secureConnection.setSSLSocketFactory = sc.socketFactory
-
                 // Use this if you need SSL authentication
                 /*
                 val userpass = user + ":" + password;
@@ -104,7 +208,6 @@ class HttpRq extends HttpRequestBase
         } catch(java.io.IOException e) {
             onError.apply(rq, rp, e)
         }
-
         try {
             secureConnection.requestMethod = method
         } catch(java.net.ProtocolException e) {
@@ -377,7 +480,7 @@ class HttpRequest extends HttpRequestBase
         }
     }
 
-    static public class Response extends HttpResponse
+    static private class LocalResponse extends HttpResponse
     {
         (HttpRequest, HttpResponse)=>void onSuccess
         (HttpRequest, HttpResponse, Exception)=>void onError
@@ -400,18 +503,6 @@ class HttpRequest extends HttpRequestBase
     // TODO figure out eventually, why #execute(some named or anonymous subclass) is not transpiling correctly
     public def run((HttpRequest, HttpResponse)=>void onSuccess, (HttpRequest, HttpResponse, Exception)=>void onError)
     {
-        this.execute(new Response(onSuccess, onError))
+        this.execute(new LocalResponse(onSuccess, onError))
     }
 }
-
-
-/*
-// TODO
-class VolleyRequest extends HttpRequestBase
-{
-    override execute()
-    {
-
-    }
-}
-*/

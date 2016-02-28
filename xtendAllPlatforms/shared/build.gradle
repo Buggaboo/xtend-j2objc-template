@@ -29,14 +29,22 @@ buildscript {scriptHandler->
     }
 }
 
+def OKIO_VER = '1.6.0'
+def OKHTTP_VER = '3.2.0'
+
 dependencies {
 
     testCompile 'junit:junit:4.12'
 
     compile     'org.json:json:20160212'
 
+    compile     "com.squareup.okio:okio:${OKIO_VER}"
+    compile     "com.squareup.okhttp3:okhttp:${OKHTTP_VER}"
+
     compile     (project.ext.lib.xtend)
 
+    j2objcTranslation "com.squareup.okio:okio:${OKIO_VER}:sources"
+    j2objcTranslation "com.squareup.okhttp3:okhttp:${OKHTTP_VER}:sources"
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib.macro:${project.ext.xtend_lib_ver}:sources"
     j2objcTranslation "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:${project.ext.xtend_lib_ver}:sources"
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib:${project.ext.xtend_lib_ver}:sources"
