@@ -45,3 +45,4 @@ Handy things to know
 * Forget about URI.Builder, also forget UrlBuilder, roll your own
 * Run unit tests with `xtendAllPlatforms> ./gradlew cleanTest test` and if you're confident `./gradlew build`
 * Transpile from Xtend to java with `xtendshared> ./gradlew build cAT`, which triggers the copy actions
+* `HttpUrlConnection` is very broken when cast to a `java.net.ssl.HttpsUrlConnection`, IosHttpsUrlConnection seems to be promising, must do additional testing on j2objc-1.0.1.

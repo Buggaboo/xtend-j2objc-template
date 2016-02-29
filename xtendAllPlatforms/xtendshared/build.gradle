@@ -31,6 +31,14 @@ dependencies {
 
   compile project(':Xtendroid') // for @AndroidJsonized
 
+  // TODO add a task to scrub the libraries from android specific functions, even if jre_emul.jar
+  // does support them for some reason
+  // I don't really understand the discussion [here](https://github.com/j2objc-contrib/j2objc-gradle/issues/181):
+  /* for file in $(find . -name '*.java' -exec grep -l Log.d {} \;); do echo sed -i -e '/Log.d/d;/import android/d' $file; done */
+
+  compile 'com.squareup.okio:okio:1.6.0'
+  compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
   // testing
   androidTestCompile 'com.android.support:support-annotations:23.1.1'
   androidTestCompile 'com.android.support.test:runner:0.4.1'

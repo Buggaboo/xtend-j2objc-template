@@ -1,19 +1,25 @@
 package com.example.xtend.wiki
 
 import com.example.xtend.http.HttpResponse
-import com.example.xtend.http.HttpRequest
 import com.example.xtend.http.HttpRp
 import com.example.xtend.http.HttpRq
-import com.example.xtend.http.HttpRequest.Response
+import static extension com.example.xtend.http.HttpRq.*
 import org.junit.Test
-import org.json.JSONObject
-import java.util.Date
 
 import static org.junit.Assert.*
 
 import static com.example.xtend.wiki.WikiQuotesService.*
+import static com.example.xtend.wiki.WikiQuotesServiceOkHttp.*
 import com.example.xtend.http.HttpRequestBase
-import java.util.Map
+import static com.example.xtend.wiki.SharedWikiQuotesShootTest.*
+
+// okhttp
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
+
 
 /**
  * Created by jasmsison on 25/02/16.
@@ -22,7 +28,7 @@ class ShareWikiQuotesTest {
 
     public static def String formatDebugMessage(HttpResponse rp, Exception e)
     {
-        String.format("code (%s), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
+        String.format("code (%d), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
     }
 
     @Test
@@ -96,63 +102,96 @@ class ShareWikiQuotesTest {
             }
         }, '7051')
     }
-
-    @Test
-    def testXtendOpenSearch() throws Exception
-    {
-        openSearch(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), 'Michael+Jackson')
-    }
-
-    @Test
-    def testXtendQueryTitles() throws Exception
-    {
-        queryTitles(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), 'Buddha')
-    }
-
-    @Test
-    def testXtendParseSections() throws Exception
-    {
-        parseSections(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), '125737')
-    }
-
-    @Test
-    def testXtendParsePage() throws Exception
-    {
-        parsePage(new Response([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))]), '7081')
-    }
-
 }
 
-class SharedWikiQuotesTestNewApproachTest
+class SharedWikiQuotesShootTest
 {
+
     public static def String formatDebugMessage(HttpRp rp, Exception e)
     {
-        String.format("code (%s), %s, %s", rp.code, rp.headers.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
+        //String.format("code (%d), %s, %s", rp.code, rp?.headers?.entrySet.map [ it.key + ':' + it.value ].join("\n"), e?.toString)
+        String.format("code (%d), %s", rp.code, e?.toString)
+    }
+
+    public static def String formatDebugMessage(HttpRp rp)
+    {
+        String.format("code (%d), %s, %s", rp.code, rp?.headers?.entrySet.map [ it.key + ':' + it.value ].join("\n"), rp?.body)
     }
 
     @Test
-    def testXtendOpenSearchNewApproach() throws Exception
+    def testOpenSearch() throws Exception
     {
-        var (HttpRq, HttpRp) => void success = [rq, rp|]
+        openSearchShoot([rq,rp| println(formatDebugMessage(rp)) ], [rq,rp,e| fail(rp.formatDebugMessage(e))], 'Michael+Jackson')
+    }
+
+    @Test
+    def testQueryTitles() throws Exception
+    {
+        queryTitlesShoot([rq,rp| println(formatDebugMessage(rp)) ], [rq,rp,e| fail(rp.formatDebugMessage(e))], 'Buddha')
+    }
+
+    @Test
+    def testParseSections() throws Exception
+    {
+        parseSectionsShoot([rq,rp| println(formatDebugMessage(rp)) ], [rq,rp,e| fail(rp.formatDebugMessage(e))], '125737')
+    }
+
+    @Test
+    def testParsePage() throws Exception
+    {
+        parsePageShoot([rq,rp| println(formatDebugMessage(rp)) ], [rq,rp,e| fail(rp.formatDebugMessage(e))], '7081')
+    }
+}
+
+class SharedWikiQuotesShTest
+{
+    @Test
+    def testOpenSearch() throws Exception
+    {
+        var (HttpRq, HttpRp) => void success = [rq, rp| println(formatDebugMessage(rp)) ]
         var (HttpRq, HttpRp, Exception) => void failure = [rq, rp, e| fail(formatDebugMessage(rp,e))]
-        openSearchNewApproach(success, failure, 'Michael+Jackson')
+        openSearchSh(success, failure, 'Michael+Jackson')
     }
 
     @Test
-    def testXtendQueryTitlesNewApproach() throws Exception
+    def testQueryTitles() throws Exception
     {
-        queryTitlesNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], 'Buddha')
+        queryTitlesSh([rq,rp|println(formatDebugMessage(rp))], [rq,rp,e| fail(formatDebugMessage(rp,e))], 'Buddha')
     }
 
     @Test
-    def testXtendParseSectionsNewApproach() throws Exception
+    def testParseSections() throws Exception
     {
-        parseSectionsNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], '125737')
+        parseSectionsSh([rq,rp|println(formatDebugMessage(rp))], [rq,rp,e| fail(formatDebugMessage(rp, e))], '125737')
     }
 
     @Test
-    def testXtendParsePageNewApproach() throws Exception
+    def testParsePage() throws Exception
     {
-        parsePageNewApproach([rq,rp|], [rq,rp,e| fail(formatDebugMessage(rp,e))], '7081')
+        parsePageSh([rq,rp|println(formatDebugMessage(rp))], [rq,rp,e| fail(formatDebugMessage(rp,e))], '7081')
     }
+}
+
+class SharedWikiQuotesOkHttpTest {
+    @Test
+    def testOpenSearch() throws Exception
+    {
+        openSearch(new Callback () {
+            override void onFailure(Call call, IOException throwable) {
+                throwable.printStackTrace()
+                fail()
+            }
+
+            override void onResponse (Call call, Response response) throws IOException {
+                if (!response.isSuccessful) throw new IOException("Unexpected code " + response);
+
+                val responseHeaders = response.headers
+                for (var i = 0; i < responseHeaders.size; i++) {
+                    println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
+                }
+                println(response.body.string)
+            }
+        }, 'Madonna')
+    }
+
 }
