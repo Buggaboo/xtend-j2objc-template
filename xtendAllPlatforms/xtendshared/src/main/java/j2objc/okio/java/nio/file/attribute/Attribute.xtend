@@ -37,7 +37,7 @@ interface UserPrincipal extends Principal
     // TODO https://docs.oracle.com/javase/7/docs/api/java/nio/file/attribute/UserPrincipal.html
 }
 
-class PosixFilePermissions
+class PosixFilePermission
 {
     // TODO https://docs.oracle.com/javase/7/docs/api/java/nio/file/attribute/PosixFilePermissions.html
 }
