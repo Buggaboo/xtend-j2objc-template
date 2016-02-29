@@ -57,8 +57,10 @@ dependencies {
     j2objcTranslation "com.google.guava:guava:${GUAVA_VER}:sources"
 
     // libraries I'm experimenting with
+/*
     compile     "com.squareup.okio:okio:${OKIO_VER}"
     compile     "com.squareup.okhttp3:okhttp:${OKHTTP_VER}"
+*/
 
     compile     (project.ext.lib.xtend)
 
@@ -71,8 +73,10 @@ dependencies {
     // even if jre_emul.jar, does support them for some reason
     // I don't really understand the discussion [here](https://github.com/j2objc-contrib/j2objc-gradle/issues/181):
     /* for file in $(find . -name '*.java' -exec grep -l Log.d {} \;); do echo sed -i -e '/Log.d/d;/import android/d' $file; done */
+/*
     j2objcTranslation "com.squareup.okio:okio:${OKIO_VER}:sources"
     j2objcTranslation "com.squareup.okhttp3:okhttp:${OKHTTP_VER}:sources"
+*/
 
     j2objcTranslation "org.eclipse.xtend:org.eclipse.xtend.lib.macro:${project.ext.xtend_lib_ver}:sources"
     j2objcTranslation "org.eclipse.xtext:org.eclipse.xtext.xbase.lib:${project.ext.xtend_lib_ver}:sources"
