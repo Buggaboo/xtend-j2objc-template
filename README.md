@@ -8,6 +8,13 @@ How to get this project up and running
 
 In a (tmux) terminal:
 
+**Prepare git submodules**
+
+Type the following commands in a terminal:
+
+0. `git submodule init`
+1. `git submodule update`
+
 **Prepare j2objc-gradle**
 
 0. Install [brew](http://brew.sh/)
